@@ -1,0 +1,82 @@
+<?php
+// $Id$
+
+/**
+ * @file Gives some basic examples of easy javascript functionality
+ * you can add to your site to improve the user experience
+ */
+
+/**
+ * Implements hook_help().
+ */
+function rocketsurgery_help($path, $arg){
+  if ($path == 'admin/help#rocketsurgery'){
+    return t('Gives some basic examples of easy javascript functionality to implement to improve the user experience.');
+  }
+}
+
+/**
+ * Implements hook_menu().
+ *
+ * @todo Make sure that permission stuff is implemented and works
+ */
+function rocketsurgery_menu(){
+  $items = array();
+  $items['admin/config/user-interface/rocketsurgery'] = array(
+    'title' => 'Rocket Surgery',
+    'description' => 'Administer javascript UI widgets',
+    'type' => MENU_NORMAL_ITEM,
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('rocketsurgery_adminform'),
+    'access callback' => 'user_access',
+    'access arguments' => array('Administer Rocket Surgery widgets'),
+  );
+  return $items;
+}
+
+/**
+ * Implements hook_module_perm().
+ */
+function rocketsurgery_module_perm(){
+  return array('Administer Rocket Surgery widgets');
+}
+
+/**
+ * Defines the administration page form
+ *
+ * @todo Let users configure the CSS selectors
+ */
+function rocketsurgery_adminform(){
+  $form = array();
+  $form['rocketsurgery_floatingmenu'] = array(
+    '#type' => 'checkbox',
+    '#title' => 'Floating menu',
+    '#default_value' => variable_get('rocketsurgery_floatingmenu', 'FALSE'),
+    '#description' => t("Sets the main menu position to fixed when scrolling down the page, so that it's always easily available"),
+    '#required' => FALSE,
+ 	);
+  $form['rocketsurgery_keyboardscroll'] = array(
+    '#type' => 'checkbox',
+    '#title' => 'Keyboard Scroll',
+    '#default_value' => variable_get('rocketsurgery_keyboardscroll', 'FALSE'),
+    '#description' => t("Lets you traverse the nodes in listings by pressing j for next, and k for previous."),
+    '#required' => FALSE,
+ 	);
+  return system_settings_form($form);
+}
+
+/**
+ * Implements hook_preprocess_page
+ *
+ * @todo Either disable for admin theme, or let user choose if to apply there too.
+ *
+ * @param type $variables
+ */
+function rocketsurgery_preprocess_page(&$variables){
+  if(variable_get('rocketsurgery_floatingmenu', 'FALSE') == TRUE){
+    drupal_add_js(drupal_get_path('module', 'rocketsurgery') . '/js/floatingmenu.js');
+  }
+  if(variable_get('rocketsurgery_keyboardscroll', 'FALSE') == TRUE){
+    drupal_add_js(drupal_get_path('module', 'rocketsurgery') . '/js/keyboardscroll.js');
+  }
+}

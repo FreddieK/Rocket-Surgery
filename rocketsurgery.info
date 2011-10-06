@@ -1,0 +1,7 @@
+;$Id$
+
+name = Rocket Surgery
+description = Some javascript widgets that might come in handy. Basically, they are proof of concepts developed for the Bartik theme, but the functionality could easily be implemented in most themes.
+package = UI
+core = 7.x
+files[] = rocketsurgery.module
