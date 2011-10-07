@@ -1,5 +1,5 @@
 jQuery(document).ready(function(){
-  var menu = jQuery("#main-menu");
+  var menu = jQuery(Drupal.settings.rocketsurgery.floatingmenu.selector);
   var startingY = menu.offset().top;
 
   menu.css({
